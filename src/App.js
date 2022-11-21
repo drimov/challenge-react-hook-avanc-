@@ -1,25 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
+import Header from './components/Header'
+import Filters from './components/Filters'
+import Contents from './components/Contents'
+import React from 'react'
+import { useTheme } from './styles-components/themesContext'
+import { CountriesCacheProvider } from './data/cacheCountries'
+// import {ErrorBoundary} from 'react-error-boundary'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () => {
+	const [theme] = useTheme()
+
+	const [search, setSearch] = React.useState('')
+	const [region, setRegion] = React.useState('All')
+
+	const handleSearchChange = (value) => {
+		setSearch(value)
+	}
+
+	const handleRegion = (value) => {
+		setRegion(value)
+	}
+
+	return (
+		<div
+		className='min-h-screen'
+			style={{ backgroundColor: theme.backgroundP, color: theme.foreground }}>
+			<Header />
+			<Filters
+				search={search}
+				region={region}
+				handleRegion={handleRegion}
+				handleSearchChange={handleSearchChange}
+			/>
+			<CountriesCacheProvider>
+				<Contents
+					search={search}
+					region={region}
+				/>
+			</CountriesCacheProvider>
+		</div>
+	)
 }
 
-export default App;
+export default App
